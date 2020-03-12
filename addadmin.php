@@ -1,5 +1,4 @@
 <?php
-//hallo
 session_start();
 
 require('handlers/loginhandler.php');
