@@ -164,7 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <br>
                     </form>
                     <br>
-                    <p style="text-align: center">Verison 1.0.1</p>
+                    <p style="text-align: center">VVS Verison 1.0.0</p>
                 </div>
             </div>
 
