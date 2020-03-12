@@ -6,7 +6,6 @@ require('handlers/blockedhandler.php');
 require('handlers/adminhandler.php');
 require_once "config.php";
 
-//hi
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
