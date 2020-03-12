@@ -148,12 +148,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <form autocomplete="off" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                             <label>Email Adresse</label>
-                            <input type="email" name="username" class="form-control underlined" >
+                            <input type="email" name="username" class="form-control underlined">
                             <span class="has-error"><?php echo $username_err; ?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                             <label>Passwort</label>
-                            <input  type="password" name="password" class="form-control underlined">
+                            <input type="password" name="password" class="form-control underlined">
 
                             <span class="has-error"><?php echo $password_err; ?></span>
                         </div>
@@ -163,6 +163,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <br>
                     </form>
+                    <br>
+                    <p>Verison 1.0.0</p>
                 </div>
             </div>
 
