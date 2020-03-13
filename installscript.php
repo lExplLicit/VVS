@@ -19,94 +19,96 @@ if (isset($init['INIT']) && $init['INIT'] == false) {
 </head>
 
 <body style="background:lightgrey; text-align:center">
-<h1>Installationsassistent - VVS</h1>
-<hr>
+  <h1>Installationsassistent - VVS</h1>
+  <hr>
 
 
-<?php
-if ($_GET['step'] == 1 || !isset($_GET['step'])) {
+  <?php
+  if ($_GET['step'] == 1 || !isset($_GET['step'])) {
 
-$_SESSION['steptwo'] = rand(10000,90000);
-?>
-
-
-<h2>Verbindung zur Datenbank herstellen.</h2><br>
+    $_SESSION['steptwo'] = rand(10000, 90000);
+  ?>
 
 
-  <form action="installscript.php?step=<?php echo $_SESSION['steptwo']; ?>" method="POST">
+    <h2>Verbindung zur Datenbank herstellen.</h2><br>
+    <p>Bei einer Docker Installation können die bereits eingetragenen Verbindungsdaten übernommen werden.</p>
+    <p>Bei erstmaliger Docker installation dauert es ca 30 Sekunden bis die Datenbank verfügbar ist.</p>
 
 
-
-    <label for="fname">Datenbank Server (+ Port):</label><br>
-    <input type="text" name="server" value="vvs_db" required><br>
-    <label for="lname">Datenbank Name</label><br>
-    <input type="text" name="name" value="vvs_database" required><br>
-    <label for="lname">Datenbank Benutzer</label><br>
-    <input type="text" name="benutzer" value="vvs_user" required><br>
-    <label for="lname">Datenbank Passwort</label><br>
-    <input type="password" name="passwort" value="vvs_password" required><br><br>
-    <input type="submit" value="Bestätigen">
-  </form>
-
-<?php
-} elseif (($_GET['step'] == $_SESSION['steptwo']) && isset($_POST['server']) && isset($_POST['benutzer']) && isset($_POST['passwort']) && isset($_POST['name'])) {
-
-
-  $link = @mysqli_connect($_POST['server'], $_POST['benutzer'], $_POST['passwort'], $_POST['name']);
-
-
-  if ($link === false) {
-    echo "ERROR: Could not connect. " . mysqli_connect_error();
-
-    echo "<br><br>Verbindung zur Datenbank nicht möglich..<br><br>";
-
-    echo '<form action="installscript.php?step=1" method="GET"><input type="submit" value="Daten ändern"></form>';
-    die();
-  } else {
-
-    $conndata = array(
-      "SERVER" => $_POST['server'],
-      "USERNAME" => $_POST['benutzer'],
-      "PASSWORD" => $_POST['passwort'],
-      "NAME" => $_POST['name']
-    );
-
-
-    $file = fopen('configuration/database.json', 'w');
-    fwrite($file, json_encode($conndata, JSON_PRETTY_PRINT));
-    fclose($file);
-
-    echo "<br>Verbindung erfolgreich.. Zugangsdaten wurden gespeichert..<br><br>";
-    echo "Die Tabellen in der Datanbank werden neu initialisiert.<br>Vorhandene Daten werden gelöscht. Möchten Sie fortfahren?<br><br><br>";
-    $_SESSION['csfr'] = rand(10000, 50000);
-    $_SESSION['dbinit'] = rand(10000, 90000);
-    echo '<form action="installscript.php?step='.$_SESSION['dbinit'].'" method="POST"><input type="hidden" name="csrf" value="' . $_SESSION['csfr'] . '"><input type="submit" value="Fortfahren"></form>';
-    die();
-  }
-} elseif ($_GET['step'] == $_SESSION['dbinit']) {
-
-  if ($_SESSION['csfr'] != $_POST['csrf']) {
-
-    die("CSFR Token not matching");
-  }
-
-
-  echo "<br>Datenbank wird initialisiert...<br>";
-  echo "Tabellen werden hinzugefügt...<br>";
-
-
-  $database = json_decode(file_get_contents('configuration/database.json'), true);
-  $link = mysqli_connect($database['SERVER'], $database['USERNAME'], $database['PASSWORD'], $database['NAME']);
-
-  $link->query('DROP TABLE vorlesungsstunden;');
-  $link->query('DROP TABLE vorlesungen;');
-  $link->query('DROP TABLE kurse;');
-  $link->query('DROP TABLE users;');
+    <form action="installscript.php?step=<?php echo $_SESSION['steptwo']; ?>" method="POST">
 
 
 
+      <label for="fname">Datenbank Server (+ :port)</label><br>
+      <input type="text" name="server" value="vvs_db" required><br>
+      <label for="lname">Datenbank Name</label><br>
+      <input type="text" name="name" value="vvs_database" required><br>
+      <label for="lname">Datenbank Benutzer</label><br>
+      <input type="text" name="benutzer" value="vvs_user" required><br>
+      <label for="lname">Datenbank Passwort</label><br>
+      <input type="password" name="passwort" value="vvs_password" required><br><br>
+      <input type="submit" value="Bestätigen">
+    </form>
 
-  $link->query('CREATE TABLE `users` (
+  <?php
+  } elseif (($_GET['step'] == $_SESSION['steptwo']) && isset($_POST['server']) && isset($_POST['benutzer']) && isset($_POST['passwort']) && isset($_POST['name'])) {
+
+
+    $link = @mysqli_connect($_POST['server'], $_POST['benutzer'], $_POST['passwort'], $_POST['name']);
+
+
+    if ($link === false) {
+      echo "ERROR: Could not connect. " . mysqli_connect_error();
+
+      echo "<br><br>Verbindung zur Datenbank nicht möglich..<br><br>";
+
+      echo '<form action="installscript.php?step=1" method="GET"><input type="submit" value="Daten ändern"></form>';
+      die();
+    } else {
+
+      $conndata = array(
+        "SERVER" => $_POST['server'],
+        "USERNAME" => $_POST['benutzer'],
+        "PASSWORD" => $_POST['passwort'],
+        "NAME" => $_POST['name']
+      );
+
+
+      $file = fopen('configuration/database.json', 'w');
+      fwrite($file, json_encode($conndata, JSON_PRETTY_PRINT));
+      fclose($file);
+
+      echo "<br>Verbindung erfolgreich.. Zugangsdaten wurden gespeichert..<br><br>";
+      echo "Die Tabellen in der Datanbank werden neu initialisiert.<br>Vorhandene Daten werden gelöscht. Möchten Sie fortfahren?<br><br><br>";
+      $_SESSION['csfr'] = rand(10000, 50000);
+      $_SESSION['dbinit'] = rand(10000, 90000);
+      echo '<form action="installscript.php?step=' . $_SESSION['dbinit'] . '" method="POST"><input type="hidden" name="csrf" value="' . $_SESSION['csfr'] . '"><input type="submit" value="Fortfahren"></form>';
+      die();
+    }
+  } elseif ($_GET['step'] == $_SESSION['dbinit']) {
+
+    if ($_SESSION['csfr'] != $_POST['csrf']) {
+
+      die("CSFR Token not matching");
+    }
+
+
+    echo "<br>Datenbank wird initialisiert...<br>";
+    echo "Tabellen werden hinzugefügt...<br>";
+
+
+    $database = json_decode(file_get_contents('configuration/database.json'), true);
+    $link = mysqli_connect($database['SERVER'], $database['USERNAME'], $database['PASSWORD'], $database['NAME']);
+
+    $link->query('DROP TABLE vorlesungsstunden;');
+    $link->query('DROP TABLE vorlesungen;');
+    $link->query('DROP TABLE kurse;');
+    $link->query('DROP TABLE users;');
+
+
+
+
+    $link->query('CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -118,15 +120,15 @@ $_SESSION['steptwo'] = rand(10000,90000);
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-  $link->query('ALTER TABLE `users`
+    $link->query('ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `username` (`username`);');
 
-  $link->query('ALTER TABLE `users`
+    $link->query('ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001;');
 
 
-  $link->query('CREATE TABLE `kurse` (
+    $link->query('CREATE TABLE `kurse` (
   `kurs_id` int(11) NOT NULL,
   `name` varchar(15) NOT NULL,
   `studenten` int(11) NOT NULL,
@@ -134,13 +136,13 @@ $_SESSION['steptwo'] = rand(10000,90000);
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-  $link->query('ALTER TABLE `kurse`
+    $link->query('ALTER TABLE `kurse`
   ADD PRIMARY KEY (`kurs_id`);');
 
-  $link->query('ALTER TABLE `kurse`
+    $link->query('ALTER TABLE `kurse`
   MODIFY `kurs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2000;');
 
-  $link->query('CREATE TABLE `vorlesungen` (
+    $link->query('CREATE TABLE `vorlesungen` (
   `vorlesungs_id` int(11) NOT NULL,
   `beschreibung` varchar(150) NOT NULL,
   `kurs_id` int(11) NOT NULL,
@@ -150,19 +152,19 @@ $_SESSION['steptwo'] = rand(10000,90000);
   `sollstunden` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-  $link->query('ALTER TABLE `vorlesungen`
+    $link->query('ALTER TABLE `vorlesungen`
   ADD PRIMARY KEY (`vorlesungs_id`),
   ADD KEY `vorlesungen_ibfk_1` (`kurs_id`),
   ADD KEY `vorlesungen_ibfk_2` (`user_id`);');
 
-  $link->query('ALTER TABLE `vorlesungen`
+    $link->query('ALTER TABLE `vorlesungen`
   MODIFY `vorlesungs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3000;');
 
-  $link->query('ALTER TABLE `vorlesungen`
+    $link->query('ALTER TABLE `vorlesungen`
   ADD CONSTRAINT `vorlesungen_ibfk_1` FOREIGN KEY (`kurs_id`) REFERENCES `kurse` (`kurs_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `vorlesungen_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;');
 
-  $link->query('CREATE TABLE `vorlesungsstunden` (
+    $link->query('CREATE TABLE `vorlesungsstunden` (
   `stunden_id` int(11) NOT NULL,
   `vorlesungs_id` int(11) NOT NULL,
   `datum` date NOT NULL,
@@ -171,81 +173,81 @@ $_SESSION['steptwo'] = rand(10000,90000);
   `ende_uhrzeit` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-  $link->query('ALTER TABLE `vorlesungsstunden`
+    $link->query('ALTER TABLE `vorlesungsstunden`
   ADD PRIMARY KEY (`stunden_id`),
   ADD KEY `vorlesung` (`vorlesungs_id`);');
 
-  $link->query('ALTER TABLE `vorlesungsstunden`
+    $link->query('ALTER TABLE `vorlesungsstunden`
   MODIFY `stunden_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4000;');
 
-  $link->query('ALTER TABLE `vorlesungsstunden`
+    $link->query('ALTER TABLE `vorlesungsstunden`
   ADD CONSTRAINT `vorlesungsstunden_ibfk_1` FOREIGN KEY (`vorlesungs_id`) REFERENCES `vorlesungen` (`vorlesungs_id`) ON DELETE CASCADE ON UPDATE CASCADE;');
 
 
 
-  echo "<br><h2>Vorgang erfolgreich. Bitte Administratorkonto anlegen</h2><br>";
+    echo "<br><h2>Vorgang erfolgreich. Bitte Administratorkonto anlegen</h2><br>";
 
-$_SESSION['addadmin'] = rand(10000,90000);
-?>
-  <form action="installscript.php?step=<?php echo $_SESSION['addadmin']; ?>" method="POST">
-    <label>Vorname:</label><br>
-    <input type="text" name="vorname" required><br>
-    <label>Nachname:</label><br>
-    <input type="text" name="nachname" required><br>
-    <label>Email:</label><br>
-    <input type="email" name="email" required><br>
-    <label>Passwort:</label><br>
-    <input type="password" name="pass" required><br><br>
+    $_SESSION['addadmin'] = rand(10000, 90000);
+  ?>
+    <form action="installscript.php?step=<?php echo $_SESSION['addadmin']; ?>" method="POST">
+      <label>Vorname:</label><br>
+      <input type="text" name="vorname" required><br>
+      <label>Nachname:</label><br>
+      <input type="text" name="nachname" required><br>
+      <label>Email:</label><br>
+      <input type="email" name="email" required><br>
+      <label>Passwort:</label><br>
+      <input type="password" name="pass" required><br><br>
 
-    <input type="checkbox" id="notif" name="notif">
-    <label for="notif">Email Benachrichtigungen an Dozenten aktivieren?</label>
-    <br>
-    <input type="checkbox" id="exam" name="exam">
-    <label for="exam">Beispieldaten hinzufügen? (Dozenten und Administratoren)</label>
-    <br><br><br>
-    <input type="submit" value="Bestätigen">
-  </form>
+      <input type="checkbox" id="notif" name="notif">
+      <label for="notif">Email Benachrichtigungen an Dozenten aktivieren?</label>
+      <br>
+      <input type="checkbox" id="exam" name="exam">
+      <label for="exam">Beispieldaten hinzufügen? (Dozenten und Administratoren)</label>
+      <br><br><br>
+      <input type="submit" value="Bestätigen">
+    </form>
 
-<?php
+  <?php
 
 
 
-} elseif ($_GET['step'] == $_SESSION['addadmin']) {
+  } elseif ($_GET['step'] == $_SESSION['addadmin']) {
 
-  $hash = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+    $hash = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 
-  $database = json_decode(file_get_contents('configuration/database.json'), true);
-  $link = mysqli_connect($database['SERVER'], $database['USERNAME'], $database['PASSWORD'], $database['NAME']);
+    $database = json_decode(file_get_contents('configuration/database.json'), true);
+    $link = mysqli_connect($database['SERVER'], $database['USERNAME'], $database['PASSWORD'], $database['NAME']);
 
-  $link->query('INSERT INTO `users` (`user_id`, `username`, `password`, `admin`, `blocked`, `vorname`, `nachname`, `unternehmen`) VALUES
+    $link->query('INSERT INTO `users` (`user_id`, `username`, `password`, `admin`, `blocked`, `vorname`, `nachname`, `unternehmen`) VALUES
   (1000, \'' . trim($_POST['email']) . '\', \'' . $hash . '\', 1, 0, \'' . trim($_POST['vorname']) . '\', \'' . trim($_POST['nachname']) . '\', \'E-Corp\');');
 
 
-  $install = array(
-    "INIT" => false
-  );
+    $install = array(
+      "INIT" => false
+    );
 
-  $file = fopen('configuration/install.json', 'w');
-  fwrite($file, json_encode($install, JSON_PRETTY_PRINT));
-  fclose($file);
+    $file = fopen('configuration/install.json', 'w');
+    fwrite($file, json_encode($install, JSON_PRETTY_PRINT));
+    fclose($file);
 
 
-  if ($_POST['notif'] == "on") {
-    $notifications = true;
-  } else {
-    $notifications = false;
-  }
+    if ($_POST['notif'] == "on") {
+      $notifications = true;
+    } else {
+      $notifications = false;
+    }
 
-  if ($_POST['exam'] == "on") {
+    if ($_POST['exam'] == "on") {
 
-    $link->query('INSERT INTO `kurse` (`kurs_id`, `name`, `studenten`, `fakultaet`, `created_at`) VALUES
+      $link->query('INSERT INTO `kurse` (`kurs_id`, `name`, `studenten`, `fakultaet`, `created_at`) VALUES
 (NULL, \'TMG17A\', 12, \'Technik\', \'2020-02-18 10:55:32\'),
 (NULL, \'TIF-18-A\', 43, \'Technik\', \'2020-02-18 10:56:06\'),
 (NULL, \'MGM-AM\', 14, \'Management\', \'2020-02-18 10:56:06\'),
 (NULL, \'WWI12B-AM\', 20, \'Wirtschaft\', \'2020-02-18 10:56:06\'),
 (NULL, \'WWI18B\', 15, \'Wirtschaft\', \'2020-03-09 10:56:29\');');
 
-    $link->query('INSERT INTO `users` (`user_id`, `username`, `password`, `admin`, `blocked`, `vorname`, `nachname`, `unternehmen`, `created_at`) VALUES
+      $link->query('INSERT INTO `users` (`user_id`, `username`, `password`, `admin`, `blocked`, `vorname`, `nachname`, `unternehmen`, `created_at`) VALUES
         (NULL, \'a@a.a\', \'$2y$10$cFmr.JB.hM82s1ZFnGG8keU2pGoMI1kluFCLuueJ0Z7ow5DxvjRs6\', 0, 0, \'Andreas\', \'Alm\', \'\', \'2020-02-18 15:29:10\'),
 (NULL, \'mritchie0@cnn.com\', \'b71dda489afc80eb136b78731e7e996b56ca9b486ecf756ca738438e11c2ea73\', 0, 0, \'Malia\', \'Ritchie\', \'\', \'2020-02-18 15:29:10\'),
 (NULL, \'cmartinovic1@symantec.com\', \'e49e3b20ad840797105b8f43917c066a7400a3f9c6dcf3a894600883dea896db\', 1, 0, \'Chad\', \'Martinovic\', \'Quatz\', \'2020-02-18 15:29:10\'),
@@ -264,27 +266,27 @@ $_SESSION['addadmin'] = rand(10000,90000);
 (NULL, \'eezzle1d@list-manage.com\', \'e93f5a0b43b57af5a0b135c73b937e7fdeeb0f467f8d94a97f8caf04e815db79\', 0, 0, \'Ebeneser\', \'Ezzle\', \'Topiczoom\', \'2020-02-18 15:29:11\'),
 (NULL, \'iyashnov1e@exblog.jp\', \'2623f6522c0b359c7b947baf7066b236f2f4620d4532cd081508db91ba5d0cfa\', 0, 0, \'Ivie\', \'Yashnov\', \'Podcat\', \'2020-02-18 15:29:11\'),
 (NULL, \'mcobbin1g@squidoo.com\', \'87ba872fca78f06d13d8feda35da06bbaeef61ee9d0b8bea04b891aadb8ba993\', 0, 0, \'Mervin\', \'Cobbin\', \'Katz\', \'2020-02-18 15:29:11\');');
+    }
+
+    $notif = array(
+      "SEND" => $notifications,
+      "MAIN_ADMIN" => trim($_POST['email'])
+    );
+
+    $file = fopen('configuration/notifications.json', 'w');
+    fwrite($file, json_encode($notif, JSON_PRETTY_PRINT));
+    fclose($file);
+
+
+    echo "<br>Installation wurde Abgeschlossen.<br><br>";
+
+    echo '<form action="index.php?" method="GET"><input type="submit" value="Installation beenden"></form>';
+    die();
+  } else {
+    echo '<br><form action="installscript.php" method="GET"><input type="submit" value="Installation beginnen"></form>';
+    die();
   }
 
-  $notif = array(
-    "SEND" => $notifications,
-    "MAIN_ADMIN" => trim($_POST['email'])
-  );
 
-  $file = fopen('configuration/notifications.json', 'w');
-  fwrite($file, json_encode($notif, JSON_PRETTY_PRINT));
-  fclose($file);
-
-
-  echo "<br>Installation wurde Abgeschlossen.<br><br>";
-
-  echo '<form action="index.php?" method="GET"><input type="submit" value="Installation beenden"></form>';
-  die();
-} else {
-echo '<br><form action="installscript.php" method="GET"><input type="submit" value="Installation beginnen"></form>';
-die();
-}
-
-
-?>
+  ?>
 </body>
