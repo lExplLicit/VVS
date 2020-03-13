@@ -19,22 +19,19 @@ oder
 
 ### Docker installation
 
-1. Die benötigten Dockerfiles als zip herunterladen und entpacken:
+1. Die benötigten Dockerfiles als zip herunterladen, entpacken und Benutzerrechte anpassen:
 ```console
 wget https://github.com/lExplLicit/VVS/raw/master/docker/VVS_Docker.zip
 unzip VVS_Docker.zip
-```
-2. Benutzerrechte anpassen:
-```console
 chown -R www-data vvs_data/config/
 ```
-3. Docker Compose ausführen:
+2. Docker Compose ausführen:
 ```console
 docker-compose up -d
 ```
-4. Anweisungen befolgen:
+3. Anweisungen befolgen:
 ```console
-Webbrowser öffnen (http://localhost/)
+Webbrowser öffnen (http://localhost/) und auf 'Zum Login' klicken.
 Den Anweisungen im Installer folgen. Zugangsdaten zur Datenbank sind bereits ausgefüllt.
 Die Zugangsdaten der Datanbank findet man in der docker-compose-yml.
 Administratoraccount anlegen.
