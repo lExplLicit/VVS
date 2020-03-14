@@ -3,7 +3,7 @@
 session_start();
 
 $init = @json_decode(file_get_contents('configuration/install.json'), true);
-if ($init['INIT'] || !isset($init['INIT'])) {
+if ($init['INIT_REQUIRED'] || !isset($init['INIT_REQUIRED'])) {
     header("location: installscript.php?step=1");
     die();
 }

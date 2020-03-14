@@ -1,7 +1,7 @@
 <?php
 session_start();
 $init = @json_decode(file_get_contents('configuration/install.json'), true);
-if (isset($init['INIT']) && $init['INIT'] == false) {
+if (isset($init['INIT_REQUIRED']) && $init['INIT_REQUIRED'] == false) {
   header("location: index.php");
   die();
 }
@@ -224,7 +224,7 @@ if (isset($init['INIT']) && $init['INIT'] == false) {
 
 
     $install = array(
-      "INIT" => false
+      "INIT_REQUIRED" => false
     );
 
     $file = fopen('configuration/install.json', 'w');
