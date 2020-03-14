@@ -12,7 +12,3 @@ session_start();
         break;
     }
 	exit;
-	
-
-
-?>

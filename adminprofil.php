@@ -102,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="header-block header-block-nav">
                     <ul class="nav-profile">
-                        
+
                         <li class="profile dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                                 <div class="img" style="background-image: url('assets/faces/8.jpg')">
