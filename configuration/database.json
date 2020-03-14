@@ -1,0 +1,6 @@
+{
+    "SERVER": "ip_address:port",
+    "USERNAME": "db_username",
+    "PASSWORD": "db_password",
+    "NAME": "db_name"
+}
