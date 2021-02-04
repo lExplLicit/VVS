@@ -130,9 +130,9 @@ if (isset($init['INIT_REQUIRED']) && $init['INIT_REQUIRED'] == false) {
 
     $link->query('CREATE TABLE `kurse` (
   `kurs_id` int(11) NOT NULL,
-  `name` varchar(15) NOT NULL,
+  `name` varchar(150) NOT NULL,
   `studenten` int(11) NOT NULL,
-  `fakultaet` varchar(50) NOT NULL,
+  `fakultaet` varchar(150) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
