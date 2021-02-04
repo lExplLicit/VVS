@@ -4,6 +4,8 @@
 Vorlesungs Verwaltungs System im Rahmen der Vorlesung "Web-Development".
 Wurde nur auf Ubuntu 18.04 (Digitalocean Droplet) getestet. Repository wird nicht weiter gepflegt.
 
+[Bild](https://github.com/lExplLicit/VVS/raw/master/assets/screenshot_vvs.png)
+
 ## Installation
 
 ### Das wird benötigt
