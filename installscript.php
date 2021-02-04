@@ -106,7 +106,7 @@ if (isset($init['INIT_REQUIRED']) && $init['INIT_REQUIRED'] == false) {
     $link->query('DROP TABLE users;');
 
 
-
+//fixed default value
 
     $link->query('CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
