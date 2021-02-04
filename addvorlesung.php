@@ -413,9 +413,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                                     foreach ($users as $user) {
                                                         if ($dozent == $user['id']) {
-                                                            echo '<option value="' . $user['id'] . '" selected>' . $user['vorname'] . ' ' . $user['nachname'] . '</option>';
+                                                            echo '<option value="' . $user['id'] . '" selected>' . htmlspecialchars($user['vorname']) . ' ' . htmlspecialchars($user['nachname']) . '</option>';
                                                         } else {
-                                                            echo '<option value="' . $user['id'] . '" >' . $user['vorname'] . ' ' . $user['nachname'] . '</option>';
+                                                            echo '<option value="' . $user['id'] . '" >' . htmlspecialchars($user['vorname']) . ' ' . htmlspecialchars($user['nachname']) . '</option>';
                                                         }
                                                     }
                                                     ?>
