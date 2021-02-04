@@ -394,9 +394,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                                     foreach ($kurse as $kurs) {
                                                         if ($kurs_p == $kurs['id']) {
-                                                            echo '<option value="' . $kurs['id'] . '" selected>' . $kurs['name'] . '</option>';
+                                                            echo '<option value="' . $kurs['id'] . '" selected>' . htmlspecialchars($kurs['name']) . '</option>';
                                                         } else {
-                                                            echo '<option value="' . $kurs['id'] . '" >' . $kurs['name'] . '</option>';
+                                                            echo '<option value="' . $kurs['id'] . '" >' . htmlspecialchars($kurs['name']) . '</option>';
                                                         }
                                                     }
                                                     ?>
