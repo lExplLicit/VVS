@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("location: kurse.php?success=1");
                 die();
             } else {
-                echo "Errror 1246125ysdxf673245";
+                echo "Errror Kursname zu lang. Max 15 Zeichen";
             }
         }
 
