@@ -13,7 +13,7 @@ require_once "config.php";
 function randomPassword($chars)
 {
 
-    $data = '!?*+-#%&1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
+    $data = '!?*+-#%&_1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
     return substr(str_shuffle($data), 0, $chars);
 }
 
@@ -290,7 +290,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         </div>
                                         <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                                             <label>Initialpasswort</label>
-                                            <input type="password" name="password" class="form-control" value="<?php echo randomPassword(10); ?>" required>
+                                            <input type="password" name="password" class="form-control" value="<?php echo randomPassword(12); ?>" required>
                                             <span class="has-error"><?php echo $password_err; ?></span>
                                         </div>
 
